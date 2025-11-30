@@ -7,3 +7,6 @@ export * from './time';
 export * from './spatial-hash-map';
 export * from './ref';
 export * from './maxSpeed';
+export * from './vrm-avatar';
+export * from './animation-state';
+export * from './gravity';

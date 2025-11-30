@@ -2,19 +2,31 @@ import { useFrame } from '@react-three/fiber';
 import { useWorld } from 'koota/react';
 import { syncView } from './systems/sync-view';
 import { updateTime } from './systems/update-time';
-import { updatePlayerRotation } from './systems/update-player-rotation';
+import { pollInputAvatar } from './systems/poll-input-avatar';
+import { playerMovement } from './systems/player-movement';
+import { animateVRM } from './systems/animate-vrm';
+import { cameraFollowPlayer } from './systems/camera-follow-player';
 
 export function GameLoop() {
 	const world = useWorld();
 
 	useFrame(() => {
-		// Start
+		// Update time first
 		updateTime(world);
 
-		// Update game state
-		updatePlayerRotation(world);
+		// Poll input
+		pollInputAvatar(world);
 
-		// Sync view state
+		// Update player movement (handles walk/fly)
+		playerMovement(world);
+
+		// Animate VRM avatars based on movement state
+		animateVRM(world);
+
+		// Camera follows player
+		cameraFollowPlayer(world);
+
+		// Sync ECS transforms to Three.js objects
 		syncView(world);
 	});
 
